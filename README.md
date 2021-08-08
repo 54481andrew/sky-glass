@@ -12,13 +12,13 @@ I'll stress this a few times: **this work is my own**. I was responsible for col
 
 As a first step towards this goal, I have worked on a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify buildings as traditional hut (circular thatch structure), modern building (rectangular aluminum roof), and background. The figures below show an example of the CNN's ability to segment the different building types.  
 
-<img align="left" src="Figures/CNN_Segmentation_Performance_2.png" alt="CNN Image Segmentation" width="700"/> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img align="center" src="Figures/CNN_Segmentation_Performance_2.png" alt="CNN Image Segmentation" width="700"/> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 
 By segmenting the images in this way, I can then use openCV tools to identify groups of pixels as unique buildings. The image below shows the output of a function I wrote that groups building pixels together using contours, then overlays the contours onto the original image.  \
 
-<img align="left" src="Figures/CNN_Contour_Performance.png" alt="Identify unique buildings with openCV" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img align="center" src="Figures/CNN_Contour_Performance.png" alt="Identify unique buildings with openCV" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 Associating pixel groups with individual pixels, in turn, allows the CNN pipeline to "count" the number of different building types in an image. The image below shows the CNN pipeline's ability to count modern buildings (left) and traditional thatch huts (right) in test images that were omitted from the training process. Generally, the CNN is able to accurately assess the number of building types in an image -- however, it is also clear that the CNN pipeline underestimates areas with high building density.   
 \
@@ -28,7 +28,7 @@ Associating pixel groups with individual pixels, in turn, allows the CNN pipelin
 
 
 
-<img align="left" src="Figures/CNN_Building_Counts.png" alt="CNN building counts vs true building counts" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img align="center" src="Figures/CNN_Building_Counts.png" alt="CNN building counts vs true building counts" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 # Jupyter notebooks
 
