@@ -1,26 +1,33 @@
-# Background
+# Background and connection to disease spillover
 
-This notebook describes the ongoing development of a convolutional neural network (CNN) that identifies village-features in satellite imagery. Though this notebook is intended as a stand-alone example of machine vision, this work is a part of a larger project with the goal of forecasting the risk of disease spillover from wildlife into humans. 
+This notebook describes the ongoing development of a convolutional neural network (CNN) that identifies village-features in satellite imagery. Though this notebook is intended as a stand-alone example of machine vision, this work is a part of a larger project with the goal of forecasting the risk of disease transmission from wildlife into humans. Oftentimes, these zoonotic viruses occur in areas with limited health infrastructure. As a result, the burden that these viruses cause to humans is underestimated or unknown. It is my hope that machine learning can help pinpoint areas that are most affected by wildlife diseases. If possible, these models can help direct intervention strategies like vaccination.
 
-As a postdoc at the University of Idaho, I develop computational pipelines that forecast the spread of viruses from wildlife into humans. Oftentimes, these zoonotic viruses occur in areas with limited health infrastructure. As a result, the extent of the risk of these viruses is often underestimated or unknown. My current work focuses on Lassa virus, an arenavirus that circulates within rodent populations in West Africa and transmits to humans that come into contact with rodent waste. Building better forecasts requires environmental features that describe the abundance of rodents that host the virus. Past field surveys have indicated that rodent populations are more prevalent in areas with houses near agricultural cultivations, for example, and less prevalent in forested areas of the village. Consequently, CNN's that extract features like houses, cultivations, forest, etc, from imagery, could provide a feature-set that allows for finescale risk prediction. 
+My current work focuses on Lassa virus, an arenavirus that circulates within rodent populations in West Africa and transmits to humans that come into contact with rodent waste. Generally, a critical step for building better forecasts of a zoonotic virus is obtaining environmental features that predict the abundance of animal reservoirs that are available to host the virus. For example, large-scale GIS datasets, like those provided by the Landsat program, are important for generating broad predictions of where the primary Lassa-reservoir, the multimammate rodent (*Mastomys natalensis*), occurs. However, past field surveys indicated that the distribution of multimammate rats is influenced by small-scale features as well: relative to other rodents that do not transmit Lassa virus,  multimammate rodent populations were more prevalent in village-areas with houses near agricultural cultivations and less prevalent in forested areas of the village. Consequently, CNN's that extract features like houses, cultivations, forest, etc, from imagery, could provide a feature-set that allows for finescale risk prediction. 
 
-I'll stress this a few times: **this work is my own**. I was responsible for collecting the satellite imagery from a Google API (using QGIS), creating shapefiles that described building perimeter and type, creating annotated versions of images, and of course, designing and fitting the CNN. Obviously, I learned quite a bit from online sources and peer-reviewed articles. These are cited throughout the walkthrough. If the reader is interested in using this repository's datasets, I kindly ask that they give the appropritate credit. 
+I'm proud to state that **this work is my own**. I was responsible for collecting the satellite imagery from a Google API (using QGIS), creating shapefiles that described building perimeter and type, creating annotated versions of images, and of course, designing and fitting the CNN. Obviously, I learned quite a bit from online sources and peer-reviewed articles. These are cited throughout the walkthrough. If the reader is interested in using this repository's datasets, I kindly ask that they give the appropritate credit. 
 
 &nbsp;
 
 # Convolutional neural network design and performance
 
-As a first step towards this goal, I have worked on a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify buildings as traditional hut (circular thatch structure), modern building (rectangular aluminum roof), and background. The figures below show an example of the CNN's ability to segment the different building types.  
+As a first step towards the goal of extracting features that are relevant to spillover forecasts, I have created a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify each pixel in an image as traditional hut (circular thatch structure), modern building (rectangular aluminum roof), or background. The figures below show an example of the CNN's ability to segment the different building types.  
+
+&nbsp;
 
 <img align="center" src="Figures/CNN_Segmentation_Performance_2.png" alt="CNN Image Segmentation" width="700"/> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+&nbsp;
 
 
-By segmenting the images in this way, I can then use openCV tools to identify groups of pixels as unique buildings. The image below shows the output of a function I wrote that groups building pixels together using contours, then overlays the contours onto the original image.  \
+By segmenting the images in this way, I can then use OpenCV tools to identify groups of pixels as unique buildings. The image below shows the output of a function that I wrote that uses OpenCV the FindContours function. After grouping the building pixels into distinct objects the function overlays the building contours onto the original image.  
+
+&nbsp;
 
 <img align="center" src="Figures/CNN_Contour_Performance.png" alt="Identify unique buildings with openCV" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-Associating pixel groups with individual pixels, in turn, allows the CNN pipeline to "count" the number of different building types in an image. The image below shows the CNN pipeline's ability to count modern buildings (left) and traditional thatch huts (right) in test images that were omitted from the training process. Generally, the CNN is able to accurately assess the number of building types in an image -- however, it is also clear that the CNN pipeline underestimates areas with high building density.   
+&nbsp;
+
+Associating pixel groups with individual pixels, in turn, allows the CNN pipeline to "count" the number of different building types in an image. The plots below show the CNN pipeline's ability to count modern buildings (left) and traditional thatch huts (right) in test images that were omitted from the training process. Generally, the CNN is able to accurately assess the number of building types in an image -- however, it is also clear that the CNN pipeline underestimates areas with high building density.   
 \
 &nbsp;
 
