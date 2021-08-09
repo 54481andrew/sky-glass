@@ -1,14 +1,18 @@
 # Background and connection to disease spillover
 
+&nbsp;
+
 This notebook describes the ongoing development of a convolutional neural network (CNN) that identifies village-features in satellite imagery. Though this notebook is intended as a stand-alone example of machine vision, this work is a part of a larger project with the goal of forecasting the risk of disease transmission from wildlife into humans. Oftentimes, these zoonotic viruses occur in areas with limited health infrastructure. As a result, the burden that these viruses cause to humans is underestimated or unknown. It is my hope that machine learning can help pinpoint areas that are most affected by wildlife diseases. If possible, these models can help direct intervention strategies like vaccination.
 
 My current work focuses on Lassa virus, an arenavirus that circulates within rodent populations in West Africa and transmits to humans that come into contact with rodent waste. Generally, a critical step for building better forecasts of a zoonotic virus is obtaining environmental features that predict the abundance of animal reservoirs that are available to host the virus. For example, large-scale GIS datasets, like those provided by the Landsat program, are important for generating broad predictions of where the primary Lassa-reservoir, the multimammate rodent (*Mastomys natalensis*), occurs. However, past field surveys indicated that the distribution of multimammate rats is influenced by small-scale features as well: relative to other rodents that do not transmit Lassa virus,  multimammate rodent populations were more prevalent in village-areas with houses near agricultural cultivations and less prevalent in forested areas of the village. Consequently, CNN's that extract features like houses, cultivations, forest, etc, from imagery, could provide a feature-set that allows for finescale risk prediction. 
 
-I'm proud to state that **this work is my own**. I was responsible for collecting the satellite imagery from a Google API (using QGIS), creating shapefiles that described building perimeter and type, creating annotated versions of images, and of course, designing and fitting the CNN. Obviously, I learned quite a bit from online sources and peer-reviewed articles. These are cited throughout the walkthrough. If the reader is interested in using this repository's datasets, I kindly ask that they give the appropritate credit. 
+I'm proud to state that **this work is my own**. I was responsible for collecting the satellite imagery from a Google API (using QGIS), creating shapefiles that described building perimeter and type, creating annotated versions of images, and of course, designing and fitting the CNN. Obviously, I learned quite a bit from online sources and peer-reviewed articles. These are cited throughout the walkthrough. If the reader is interested in using this repository's datasets, I kindly ask that they give the appropriate credit. 
 
 &nbsp;
 
 # Convolutional neural network design and performance
+
+&nbsp;
 
 As a first step towards the goal of extracting features that are relevant to spillover forecasts, I have created a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify each pixel in an image as traditional hut (circular thatch structure), modern building (rectangular aluminum roof), or background. The figures below show an example of the CNN's ability to segment the different building types.  
 
@@ -31,11 +35,9 @@ Associating pixel groups with individual pixels, in turn, allows the CNN pipelin
 \
 &nbsp;
 
-
-
-
-
 <img align="center" src="Figures/CNN_Building_Counts.png" alt="CNN building counts vs true building counts" width="700"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;
 
 # Jupyter notebooks
 
