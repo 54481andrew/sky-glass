@@ -14,7 +14,7 @@ I'm proud to state that **this work is my own**. I was responsible for collectin
 
 &nbsp;
 
-As a first step towards the goal of extracting features that are relevant to spillover forecasts, I have created a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify each pixel in an image as traditional hut (circular thatch structure), modern building (rectangular aluminum roof), or background. The figures below show an example of the CNN's ability to segment the different building types.  
+As a first step towards the goal of extracting features that are relevant to spillover forecasts, I have created a CNN that identifies buildings in satellite imagery. This CNN is based on the [U-Net image segmentation design](https://link.springer.com/chapter/10.1007%2F978-3-319-24574-4_28), using an [EfficientNet](https://arxiv.org/abs/1905.11946) as an encoder and a simple decoder. Specifically, this CNN will classify each pixel in an image as traditional building (circular thatch structure), modern building (rectangular aluminum roof), or background. The figures below show an example of the CNN's ability to segment the different building types.  
 
 &nbsp;
 
@@ -31,7 +31,7 @@ By segmenting the images in this way, I can then use OpenCV tools to identify gr
 
 &nbsp;
 
-Associating pixel groups with individual pixels, in turn, allows the CNN pipeline to "count" the number of different building types in an image. The plots below show the CNN pipeline's ability to count modern buildings (left) and traditional thatch huts (right) in test images that were omitted from the training process. Generally, the CNN is able to accurately assess the number of building types in an image -- however, it is also clear that the CNN pipeline underestimates areas with high building density.   
+Associating pixel groups with individual pixels, in turn, allows the CNN pipeline to "count" the number of different building types in an image. The plots below show the CNN pipeline's ability to count modern buildings (left) and traditional buildings (right) in test images that were omitted from the training process. Generally, the CNN is able to accurately assess the number of building types in an image -- however, it is also clear that the CNN pipeline underestimates areas with high building density.   
 \
 &nbsp;
 
