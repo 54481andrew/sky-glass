@@ -413,6 +413,8 @@ def Image_Generator(gen_dataframe, feature_dict, rot = 360, batch_size = 5, imag
     for (img,mask) in combined_generator:
         if adjust:
             img, mask = Adjust_Data(img,mask,feature_dict, normalize)
+            img, mask = seq(images = img.astype('uint8'), 
+                            segmentation_maps = mask.astype('uint8'))
         yield (img,mask)        
 
 
